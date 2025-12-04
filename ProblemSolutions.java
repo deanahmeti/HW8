@@ -81,8 +81,41 @@ class ProblemSolutions {
         ArrayList<Integer>[] adj = getAdjList(numExams, 
                                         prerequisites); 
 
-        // ADD YOUR CODE HERE - ADD YOUR NAME / SECTION AT TOP OF FILE
-        return false;
+      
+
+        int[] indegree = new int[numExams];
+
+
+        for (int u = 0; u < numExams; u++) {
+            for (int v : adj[u]) {
+                indegree[v]++;
+            }
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        for (int i = 0; i < numExams; i++) {
+            if (indegree[i] == 0) {
+                queue.add(i);
+            }
+        }
+
+        int processed = 0;
+
+        while (!queue.isEmpty()) {
+            int u = queue.poll();
+            processed++;
+
+            //process to remove edges from u
+            for (int v : adj[u]) {
+                indegree[v]--;
+                if (indegree[v] == 0) {
+                    queue.add(v);
+                }
+            }
+        }
+
+        return processed == numExams;
 
     }
 
@@ -190,9 +223,33 @@ class ProblemSolutions {
             }
         }
 
-        // YOUR CODE GOES HERE - you can add helper methods, you do not need
-        // to put all code in this method.
-        return -1;
+        boolean [] visited = new boolean[numNodes];
+        int groups = 0; 
+
+        for (int node = 0; node < numNodes; node++) {
+            if (!visited[node]) {
+                groups++;
+                dfs(node, graph, visited);
+            }
+        }
+
+        return groups; 
+
+    }
+
+    private void dfs(int node, Map<Integer, List<Integer>> graph, boolean[] visited) {
+
+        visited[node] = true;
+
+        if (!graph.containsKey(node)) {
+            return;
+        }
+
+        for (int nei : graph.get(node)) {
+            if (!visited[nei]) {
+                dfs(nei, graph, visited);
+            }
+        }
     }
 
 }

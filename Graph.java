@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   dean ahmeti / COMP 272 - 002
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -104,7 +104,32 @@ public class Graph {
   
   public int findRoot() {
 
-    // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME/SECTION AT TOP OF FILE
-    return -1;
+
+    int[] incoming = new int[numVertices]; // array counting incoming edges
+
+    //for loop to view adjacency list
+    for (int src = 0; src < numVertices; src++) {
+      for (int dest : adjListArr[src]) {
+        incoming[dest]++;
+      }
+    }
+    //to find all vertices with zero edges
+    int rootIndex = -1;
+    for (int i = 0; i < numVertices; i++) {
+      if (incoming[i] == 0) {
+        if (rootIndex != -1) {
+          return -1; //invalid due to multiple roots
+
+        }
+        rootIndex = i;
+      }
+    }
+    // Possibily of If no vertices with zero edges
+    if (rootIndex == -1) {
+      return -1;
+    }
+
+    return vertexValues.get(rootIndex);
   } 
+
 }
